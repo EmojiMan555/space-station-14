@@ -1,6 +1,8 @@
 #Tag (Organize these later lol)
 - type: Tag
   id: XenoSprayNozzle
+- type: Tag
+  id: XenoNozzleBackTank
 #-------------------------------
 
 - type: entity
@@ -11,7 +13,7 @@
   components:
   - type: Tag
     tags:
-    - NozzleBackTank
+    - XenoNozzleBackTank
     - WhitelistChameleon
   - type: Sprite
     sprite: Clothing/Back/Backpacks/waterbackpack.rsi
@@ -37,27 +39,27 @@
           tags:
           - XenoSprayNozzle
   - type: Appearance
-  - type: SolutionAmmoProvider
-    solutionId: tank
-    proto: BulletWaterShot
-  - type: SolutionTransfer
-    transferAmount: 50
-    maxTransferAmount: 100
-    minTransferAmount: 10
-    canChangeTransferAmount: true
-  - type: UserInterface
-    interfaces:
-      enum.TransferAmountUiKey.Key:
-        type: TransferAmountBoundUserInterface
-  - type: DrawableSolution
-    solution: tank
-  - type: RefillableSolution
-    solution: tank
-  - type: DrainableSolution
-    solution: tank
-  - type: ExaminableSolution
-    solution: tank
-    exactVolume: true
+#  - type: SolutionAmmoProvider
+#    solutionId: tank
+#    proto: BulletWaterShot
+#  - type: SolutionTransfer
+#    transferAmount: 50
+#    maxTransferAmount: 100
+#    minTransferAmount: 10
+#    canChangeTransferAmount: true
+#  - type: UserInterface
+#    interfaces:
+#      enum.TransferAmountUiKey.Key:
+#        type: TransferAmountBoundUserInterface
+#  - type: DrawableSolution
+#    solution: tank
+#  - type: RefillableSolution
+#    solution: tank
+#  - type: DrainableSolution
+#    solution: tank
+#  - type: ExaminableSolution
+#    solution: tank
+#    exactVolume: true
 
 - type: entity
   id: WeaponXenovacSprayNozzle
@@ -74,28 +76,28 @@
   - type: Item
     sprite: Objects/Weapons/Guns/Basic/spraynozzle.rsi
     size: Normal
-  - type: Gun
-    cameraRecoilScalar: 0 #no recoil
-    fireRate: 4
-    selectedMode: FullAuto
-    availableModes:
-    - FullAuto
-    soundGunshot:
-      path: /Audio/Weapons/Guns/Gunshots/water_spray.ogg
-  - type: Absorbent
-    pickupAmount: 35
-    solutionName: tank
-    useAbsorberSolution: false
-    pickupSound:
-      path: /Audio/Effects/Fluids/vacuum-cleaner-fast.ogg
+#  - type: Gun
+#    cameraRecoilScalar: 0 #no recoil
+#    fireRate: 4
+#    selectedMode: FullAuto
+#    availableModes:
+#    - FullAuto
+#    soundGunshot:
+#      path: /Audio/Weapons/Guns/Gunshots/water_spray.ogg
+  #- type: Absorbent
+  #  pickupAmount: 35
+  #  solutionName: tank
+  #  useAbsorberSolution: false
+  #  pickupSound:
+  #    path: /Audio/Effects/Fluids/vacuum-cleaner-fast.ogg
   - type: Appearance
-  - type: ClothingSlotAmmoProvider
+  #- type: ClothingSlotAmmoProvider
   - type: SlotBasedConnectedContainer
     targetSlot:
     - BACK
     - suitStorage
     containerWhitelist:
       tags:
-      - NozzleBackTank
+      - XenoNozzleBackTank
   - type: UseDelay
     delay: 1.0
