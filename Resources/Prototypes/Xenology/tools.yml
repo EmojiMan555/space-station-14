@@ -1,9 +1,8 @@
 #Tag (Organize these later lol)
 - type: Tag
   id: XenoSprayNozzle
-
 - type: Tag
-  id: XenovacBackTank
+  id: XenoNozzleBackTank
 #-------------------------------
 
 - type: entity
@@ -79,7 +78,7 @@
     availableModes:
     - SemiAuto
   - type: Appearance
-  - type: ClothingSlotAmmoProvider
+  #- type: ClothingSlotAmmoProvider
   - type: SlotBasedConnectedContainer
     targetSlot:
     - BACK
