@@ -6,13 +6,13 @@ namespace Content.Shared.Xenobiology;
 public sealed partial class XenoSlimeComponent : Component
 {
     [DataField, AutoNetworkedField]
-    public int Hunger = 90;
+    public double Hunger = 90;
 
     [DataField, AutoNetworkedField]
     public SlimeMood Mood = SlimeMood.Calm;
 
     [DataField]
-    public int HungerDrain = 1;
+    public double HungerDrain = 1.5;
 
     [DataField]
     public TimeSpan DrainInterval = TimeSpan.FromSeconds(2);

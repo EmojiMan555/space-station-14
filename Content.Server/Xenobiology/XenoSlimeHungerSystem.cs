@@ -37,7 +37,7 @@ public sealed partial class XenoSlimeHungerSystem : EntitySystem
         }
     }
 
-    public void AddHunger(Entity<XenoSlimeComponent> ent, int amount)
+    public void AddHunger(Entity<XenoSlimeComponent> ent, double amount)
     {
         var newHunger = Math.Max(0, ent.Comp.Hunger + amount);
 
