@@ -56,19 +56,19 @@ public sealed partial class XenovacSystem : EntitySystem
 
         if (!_interaction.InRangeUnobstructed(args.User, target, ent.Comp.Range))
         {
-            _popup.PopupClient(Loc.GetString("xenovac-popup-out-of-range"), ent, args.User);
+            _popup.PopupEntity(Loc.GetString("xenovac-popup-out-of-range"), ent, args.User);
             return;
         }
 
         if (!TryGetTank(ent, out var tank, out var container))
         {
-            _popup.PopupClient(Loc.GetString("xenovac-popup-no-tank"), ent, args.User);
+            _popup.PopupEntity(Loc.GetString("xenovac-popup-no-tank"), ent, args.User);
             return;
         }
 
         if (container.ContainedEntities.Count >= tank.Value.Comp.Capacity)
         {
-            _popup.PopupClient(Loc.GetString("xenovac-popup-tank-full"), ent, args.User);
+            _popup.PopupEntity(Loc.GetString("xenovac-popup-tank-full"), ent, args.User);
             return;
         }
 
@@ -94,7 +94,7 @@ public sealed partial class XenovacSystem : EntitySystem
 
         if (container.ContainedEntities.Count >= tank.Value.Comp.Capacity)
         {
-            _popup.PopupClient(Loc.GetString("xenovac-popup-tank-full"), ent, args.User);
+            _popup.PopupEntity(Loc.GetString("xenovac-popup-tank-full"), ent, args.User);
             return;
         }
 
@@ -102,7 +102,7 @@ public sealed partial class XenovacSystem : EntitySystem
             return;
 
         args.Handled = true;
-        _popup.PopupClient(Loc.GetString("xenovac-popup-sucked",
+        _popup.PopupEntity(Loc.GetString("xenovac-popup-sucked",
                 ("target", target),
                 ("count", container.ContainedEntities.Count),
                 ("capacity", tank.Value.Comp.Capacity)),
@@ -180,7 +180,7 @@ public sealed partial class XenovacSystem : EntitySystem
         _container.EmptyContainer(container, destination: _transform.GetMoverCoordinates(ent));
 
         if (user != null)
-            _popup.PopupClient(Loc.GetString("xenovac-popup-emptied"), ent, user.Value);
+            _popup.PopupEntity(Loc.GetString("xenovac-popup-emptied"), ent, user.Value);
     }
 
     private bool CanSuck(Entity<XenovacNozzleComponent> ent, EntityUid user, EntityUid target)

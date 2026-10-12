@@ -2,7 +2,7 @@
 - type: Tag
   id: XenoSprayNozzle
 - type: Tag
-  id: XenoNozzleBackTank
+  id: XenovacBackTank
 #-------------------------------
 
 - type: entity
@@ -45,7 +45,7 @@
       xenovac_storage: !type:Container
   - type: XenovacTank
     containerId: xenovac_storage
-    capacity: 4
+    capacity: 5
   - type: ContainerAmmoProvider
     container: xenovac_storage
 
@@ -66,7 +66,7 @@
     size: Normal
   - type: XenovacNozzle
     range: 3
-    suckDelay: 0.75
+    suckDelay: 0
     whitelist:
       components:
       - MonkeyAccent
@@ -78,7 +78,7 @@
     availableModes:
     - SemiAuto
   - type: Appearance
-  #- type: ClothingSlotAmmoProvider
+  - type: ClothingSlotAmmoProvider
   - type: SlotBasedConnectedContainer
     targetSlot:
     - BACK
