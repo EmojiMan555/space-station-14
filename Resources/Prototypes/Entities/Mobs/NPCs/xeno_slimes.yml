@@ -1,0 +1,7 @@
+- type: entity
+  parent: MobAdultSlimes
+  id: MobXenoSlimeGrey
+  name: grey slime
+  descriptionn: A hungry cute jelly.
+  components:
+  - type: XenoSlime
