@@ -1,5 +1,4 @@
 using Content.Shared.Xenobiology;
-using Lidgren.Network;
 using Robust.Shared.Timing;
 
 namespace Content.Server.Xenobiology;

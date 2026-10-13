@@ -7,7 +7,7 @@ namespace Content.Shared.Xenobiology;
 public enum SlimeMood : byte
 {
     Rabid, //hunger < 40
-    Angry, //41 to 80
-    Calm, //81 to 149
+    Angry, //40 to 79
+    Calm, //80 to 149
     Full, //hunger >= 150
 }
