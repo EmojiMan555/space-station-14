@@ -2,7 +2,7 @@ using Content.Shared.Whitelist;
 using Robust.Shared.Audio;
 using Robust.Shared.GameStates;
 
-namespace Content.Shared.Xenology;
+namespace Content.Shared.Xenobiology.Tools.Xenovac;
 
 /// <summary>
 /// Nozzle that sucks valid targets into a connected <see cref="XenovacTankComponent"/>.

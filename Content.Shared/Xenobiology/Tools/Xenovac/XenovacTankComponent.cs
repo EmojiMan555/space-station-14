@@ -1,6 +1,6 @@
 using Robust.Shared.GameStates;
 
-namespace Content.Shared.Xenology;
+namespace Content.Shared.Xenobiology.Tools.Xenovac;
 
 /// <summary>
 /// Backpack tank that stores whatever a <see cref="XenovacNozzleComponent"/> sucked up.

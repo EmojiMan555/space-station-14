@@ -11,7 +11,7 @@ using Robust.Shared.Containers;
 using Robust.Shared.Serialization;
 using Robust.Shared.Utility;
 
-namespace Content.Shared.Xenology;
+namespace Content.Shared.Xenobiology.Tools.Xenovac;
 
 /// <summary>
 /// Handles the Xenovac: a Slime Rancher style vacpack that sucks creatures into a backpack tank.

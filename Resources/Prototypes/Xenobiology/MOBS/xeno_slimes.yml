@@ -5,3 +5,6 @@
   description: A hungry cute jelly.
   components:
   - type: XenoSlime
+    hunger: 140
+    mergeCount: 3
+    hungerDrain: 1.5

@@ -1,5 +1,6 @@
-using Content.Shared.Xenobiology;
 using Robust.Shared.Timing;
+using Content.Shared.Xenobiology.Slime;
+
 
 namespace Content.Server.Xenobiology;
 
@@ -16,7 +17,10 @@ public sealed partial class XenoSlimeHungerSystem : EntitySystem
     private void OnMapInit(Entity<XenoSlimeComponent> ent, ref MapInitEvent args)
     {
         ent.Comp.NextDrain = _timing.CurTime + ent.Comp.DrainInterval;
+
+        var oldMood = ent.Comp.Mood;
         UpdateMood(ent);
+        RaiseHungerChanged(ent, oldMood);
         Dirty(ent);
     }
 
@@ -36,17 +40,6 @@ public sealed partial class XenoSlimeHungerSystem : EntitySystem
         }
     }
 
-    public void AddHunger(Entity<XenoSlimeComponent> ent, double amount)
-    {
-        var newHunger = Math.Max(0, ent.Comp.Hunger + amount);
-
-        if (newHunger == ent.Comp.Hunger)
-            return;
-        ent.Comp.Hunger = newHunger;
-        UpdateMood(ent);
-        Dirty(ent);
-    }
-
     private void UpdateMood(Entity<XenoSlimeComponent> ent)
     {
         var c = ent.Comp;
@@ -59,5 +52,25 @@ public sealed partial class XenoSlimeHungerSystem : EntitySystem
             c.Mood = SlimeMood.Angry;
         else
             c.Mood = SlimeMood.Rabid;
+    }
+
+    public void AddHunger(Entity<XenoSlimeComponent> ent, double amount)
+    {
+        var newHunger = Math.Max(0, ent.Comp.Hunger + amount);
+
+        if (newHunger == ent.Comp.Hunger)
+            return;
+
+        var oldMood = ent.Comp.Mood;
+        ent.Comp.Hunger = newHunger;
+        UpdateMood(ent);
+        Dirty(ent);
+        RaiseHungerChanged(ent, oldMood);
+    }
+
+    private void RaiseHungerChanged(Entity<XenoSlimeComponent> ent, SlimeMood oldMood)
+    {
+        var ev = new XenoSlimeHungerChangedEvent(oldMood);
+        RaiseLocalEvent(ent.Owner, ref ev);
     }
 }
