@@ -1,12 +1,11 @@
 using Robust.Shared.Timing;
 using Content.Shared.Xenobiology.Slime;
 
-
 namespace Content.Server.Xenobiology;
 
 public sealed partial class XenoSlimeHungerSystem : EntitySystem
 {
-    [Dependency] private readonly IGameTiming _timing = default!;
+    [Dependency] private IGameTiming _timing = default!;
 
     public override void Initialize()
     {
@@ -20,8 +19,13 @@ public sealed partial class XenoSlimeHungerSystem : EntitySystem
 
         var oldMood = ent.Comp.Mood;
         UpdateMood(ent);
-        RaiseHungerChanged(ent, oldMood);
         Dirty(ent);
+        RaiseHungerChanged(ent, oldMood);
+
+        // Always announce the starting mood once, so a slime that SPAWNS Full
+        // (hunger 150+) still splits.
+        var moodEv = new XenoSlimeMoodChangedEvent(oldMood, ent.Comp.Mood);
+        RaiseLocalEvent(ent.Owner, ref moodEv);
     }
 
     public override void Update(float frameTime)
@@ -44,13 +48,14 @@ public sealed partial class XenoSlimeHungerSystem : EntitySystem
     {
         var c = ent.Comp;
 
-        if (c.Hunger >= c.FullThreshold)
+        // 80 is Angry and 40 is Rabid (spec 3.2-3.4)
+        if (c.Hunger >= c.FullThreshold)        // 150 or more
             c.Mood = SlimeMood.Full;
-        else if (c.Hunger >= c.CalmThreshold)
+        else if (c.Hunger > c.CalmThreshold)    // more than 80
             c.Mood = SlimeMood.Calm;
-        else if (c.Hunger >= c.AngerThreshold)
+        else if (c.Hunger > c.AngerThreshold)   // more than 40
             c.Mood = SlimeMood.Angry;
-        else
+        else                                    // 40 or less
             c.Mood = SlimeMood.Rabid;
     }
 
@@ -64,8 +69,28 @@ public sealed partial class XenoSlimeHungerSystem : EntitySystem
         var oldMood = ent.Comp.Mood;
         ent.Comp.Hunger = newHunger;
         UpdateMood(ent);
-        Dirty(ent);
+
+        // Only network when the mood changed (Step 2.5)
+        if (ent.Comp.Mood != oldMood)
+            Dirty(ent);
+
         RaiseHungerChanged(ent, oldMood);
+
+        // NEW (Step 6): a second, rarer event only when the mood changes
+        if (ent.Comp.Mood != oldMood)
+        {
+            var moodEv = new XenoSlimeMoodChangedEvent(oldMood, ent.Comp.Mood);
+            RaiseLocalEvent(ent.Owner, ref moodEv);
+        }
+    }
+
+    /// <summary>
+    /// Sets hunger to an exact value (used by merging: "hunger = average of both").
+    /// It just works out the difference and reuses AddHunger, so all events still fire.
+    /// </summary>
+    public void SetHunger(Entity<XenoSlimeComponent> ent, double value)
+    {
+        AddHunger(ent, value - ent.Comp.Hunger);
     }
 
     private void RaiseHungerChanged(Entity<XenoSlimeComponent> ent, SlimeMood oldMood)

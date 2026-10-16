@@ -1,10 +1,281 @@
+# ============================================================
+#  BASE: everything every xeno slime color shares
+# ============================================================
 - type: entity
+  abstract: true                     # abstract = template only, can't be spawned
   parent: MobAdultSlimes
-  id: MobXenoSlimeGrey
-  name: grey slime
+  id: BaseMobXenoSlime
+  name: xeno slime
   description: A hungry cute jelly.
   components:
+  # Greyscale body + eyes, so each color only needs a tint (see the colors below)
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: Xenobiology/Mobs/xeno_slimes.rsi
+    layers:
+    - state: eyes_default
+      shader: unshaded
+      color: "#333333"
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: base1
+  - type: DamageStateVisuals         # swaps the body sprite when the slime dies
+    states:
+      Alive:
+        Base: base1
+      Dead:
+        Base: base1_dead
+  # Every pet "works" visually. XenoSlimeFriendSystem rolls the real friend chance.
+  - type: InteractionPopup
+    successChance: 1
   - type: XenoSlime
-    hunger: 140
-    mergeCount: 3
-    hungerDrain: 1.5
+  - type: XenoSlimeBrain
+  - type: XenoSlimeFeeder          # attack / latch / eating-alive settings (Step 5)
+  # Vanilla brain OFF. HTN only keeps the "awake" sticker (ActiveNPC) up to date.
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+    enabled: false
+
+# ============================================================
+#  COLORS + MUTATION TREE (spec 12.6)
+#  "color" tints the whole sprite. "mutations" = what babies can become.
+# ============================================================
+- type: entity
+  parent: BaseMobXenoSlime
+  id: MobXenoSlimeGrey
+  name: grey slime
+  components:
+  - type: Sprite
+    color: "#999999"
+  - type: XenoSlime
+    mutations: [ MobXenoSlimeOrange, MobXenoSlimePurple, MobXenoSlimeBlue, MobXenoSlimeMetal ]
+
+- type: entity
+  parent: BaseMobXenoSlime
+  id: MobXenoSlimeOrange
+  name: orange slime
+  components:
+  - type: Sprite
+    color: "#f07a26"
+  - type: XenoSlime
+    mutations: [ MobXenoSlimeYellow, MobXenoSlimeDarkPurple, MobXenoSlimeRed ]
+
+- type: entity
+  parent: BaseMobXenoSlime
+  id: MobXenoSlimePurple
+  name: purple slime
+  components:
+  - type: Sprite
+    color: "#9721c2"
+  - type: XenoSlime
+    mutations: [ MobXenoSlimeDarkPurple, MobXenoSlimeDarkBlue, MobXenoSlimeGreen ]
+
+- type: entity
+  parent: BaseMobXenoSlime
+  id: MobXenoSlimeBlue
+  name: blue slime
+  components:
+  - type: Sprite
+    color: "#34cfeb"
+  - type: XenoSlime
+    mutations: [ MobXenoSlimeDarkBlue, MobXenoSlimeSilver, MobXenoSlimePink ]
+
+- type: entity
+  parent: BaseMobXenoSlime
+  id: MobXenoSlimeMetal
+  name: metal slime
+  components:
+  - type: Sprite
+    color: "#5e5e5e"
+  - type: XenoSlime
+    mutations: [ MobXenoSlimeYellow, MobXenoSlimeSilver, MobXenoSlimeGold ]
+
+- type: entity
+  parent: BaseMobXenoSlime
+  id: MobXenoSlimeYellow
+  name: yellow slime
+  components:
+  - type: Sprite
+    color: "#ffeb52"
+  - type: XenoSlime
+    mutations: [ MobXenoSlimeOrange, MobXenoSlimeMetal, MobXenoSlimeBluespace ]
+
+- type: entity
+  parent: BaseMobXenoSlime
+  id: MobXenoSlimeDarkPurple
+  name: dark purple slime
+  components:
+  - type: Sprite
+    color: "#501466"
+  - type: XenoSlime
+    mutations: [ MobXenoSlimeOrange, MobXenoSlimePurple, MobXenoSlimeSepia ]
+
+- type: entity
+  parent: BaseMobXenoSlime
+  id: MobXenoSlimeDarkBlue
+  name: dark blue slime
+  components:
+  - type: Sprite
+    color: "#132b6e"
+  - type: XenoSlime
+    mutations: [ MobXenoSlimePurple, MobXenoSlimeBlue, MobXenoSlimeCerulean ]
+
+- type: entity
+  parent: BaseMobXenoSlime
+  id: MobXenoSlimeSilver
+  name: silver slime
+  components:
+  - type: Sprite
+    color: "#aab8bd"
+  - type: XenoSlime
+    mutations: [ MobXenoSlimeMetal, MobXenoSlimeBlue, MobXenoSlimePyrite ]
+
+- type: entity
+  parent: BaseMobXenoSlime
+  id: MobXenoSlimeRed
+  name: red slime
+  components:
+  - type: Sprite
+    color: "#fc4e4e"
+  - type: XenoSlime
+    mutations: [ MobXenoSlimeOil ]
+
+- type: entity
+  parent: BaseMobXenoSlime
+  id: MobXenoSlimeGreen
+  name: green slime
+  components:
+  - type: Sprite
+    color: "#4efc4e"
+  - type: XenoSlime
+    mutations: [ MobXenoSlimeBlack ]
+
+- type: entity
+  parent: BaseMobXenoSlime
+  id: MobXenoSlimePink
+  name: pink slime
+  components:
+  - type: Sprite
+    color: "#fc86cf"
+  - type: XenoSlime
+    mutations: [ MobXenoSlimeLightPink ]
+
+- type: entity
+  parent: BaseMobXenoSlime
+  id: MobXenoSlimeGold
+  name: gold slime
+  components:
+  - type: Sprite
+    color: "#8a7b1c"
+  - type: XenoSlime
+    mutations: [ MobXenoSlimeAdamantine ]
+
+# ---- Final colors: no "mutations", babies always stay this color ----
+- type: entity
+  parent: BaseMobXenoSlime
+  id: MobXenoSlimeBluespace
+  name: bluespace slime
+  components:
+  - type: Sprite
+    color: "#d6f4ff"
+
+- type: entity
+  parent: BaseMobXenoSlime
+  id: MobXenoSlimeSepia
+  name: sepia slime
+  components:
+  - type: Sprite
+    color: "#c9b7a9"
+
+- type: entity
+  parent: BaseMobXenoSlime
+  id: MobXenoSlimeCerulean
+  name: cerulean slime
+  components:
+  - type: Sprite
+    color: "#5998b3"
+
+- type: entity
+  parent: BaseMobXenoSlime
+  id: MobXenoSlimePyrite
+  name: pyrite slime
+  components:
+  - type: Sprite
+    color: "#ebe15b"
+
+- type: entity
+  parent: BaseMobXenoSlime
+  id: MobXenoSlimeOil
+  name: oil slime
+  components:
+  - type: Sprite
+    color: "#3a3a2a"
+
+- type: entity
+  parent: BaseMobXenoSlime
+  id: MobXenoSlimeBlack
+  name: black slime
+  components:
+  - type: Sprite
+    color: "#262626"
+
+- type: entity
+  parent: BaseMobXenoSlime
+  id: MobXenoSlimeLightPink
+  name: light pink slime
+  components:
+  - type: Sprite
+    color: "#ff94d1"
+
+- type: entity
+  parent: BaseMobXenoSlime
+  id: MobXenoSlimeAdamantine
+  name: adamantine slime
+  components:
+  - type: Sprite
+    color: "#407985"
+
+- type: entity
+  parent: BaseMobXenoSlime
+  id: MobXenoSlimeRainbow
+  name: rainbow slime
+  components:
+  - type: Sprite
+    color: "#ffffff"
+
+# ============================================================
+#  TEST SLIMES (delete later)
+# ============================================================
+- type: entity
+  parent: MobXenoSlimeGrey
+  id: MobXenoSlimeTestSplit
+  suffix: Test, splits in 3s
+  components:
+  - type: XenoSlime
+    hunger: 155          # spawns Full → shakes 3s → splits
+
+- type: entity
+  parent: MobXenoSlimeGrey
+  id: MobXenoSlimeTestRainbow
+  suffix: Test, 95% mutation
+  components:
+  - type: XenoSlime
+    hunger: 155
+    mutationChance: 0.95  # 95% + 15% → babies are Rainbow
+
+- type: entity
+  parent: MobXenoSlimeGrey
+  id: MobXenoSlimeTestMerge
+  suffix: Test, calm, no drain
+  components:
+  - type: XenoSlime
+    hunger: 100
+    hungerDrain: 0        # stays Calm so it can merge forever
+
+- type: entity
+  parent: MobXenoSlimeGrey
+  id: MobXenoSlimeTestHungry
+  suffix: Test, eats corpses
+  components:
+  - type: XenoSlime
+    hunger: 85            # Calm, 13 corpse bites from Full
