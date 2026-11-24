@@ -6,7 +6,7 @@ namespace Content.Shared.Botany.Events;
 /// Event of plant growing ticking.
 /// </summary>
 [ByRefEvent]
-public readonly record struct PlantGrowEvent(EntityUid Tray);
+public readonly record struct PlantGrowEvent(EntityUid Tray, bool ForceUpdate);
 
 /// <summary>
 /// Event raised when a harvest is attempted. Cancel to prevent the harvest.
@@ -19,6 +19,12 @@ public record struct PlantHarvestAttemptEvent(EntityUid User, EntityUid Target, 
 /// </summary>
 [ByRefEvent]
 public readonly record struct PlantHarvestedEvent(EntityUid User, EntityUid Target);
+
+/// <summary>
+/// Raised on a plant after each of its produce entities has been spawned and initialized.
+/// </summary>
+[ByRefEvent]
+public readonly record struct PlantProduceSpawnedEvent(EntityUid Produce);
 
 /// <summary>
 /// Raised after processing a plant's random mutations.
